@@ -1,0 +1,6 @@
+.DS_Store
+.claude/
+__pycache__/
+example_app/.dart_tool/
+example_app/build/
+example_app/.flutter-plugins-dependencies

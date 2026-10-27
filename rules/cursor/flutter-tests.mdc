@@ -1,0 +1,16 @@
+---
+description: Rules for writing Flutter unit, widget and integration tests
+globs: test/**/*.dart,integration_test/**/*.dart
+alwaysApply: false
+---
+<!-- Generated from rules/AGENTS.md by scripts/build_rules.py. Edit AGENTS.md instead. -->
+
+## Testing
+
+- **Unit tests** for controllers, repositories, parsers and anything with branches. **Widget tests** for each screen's loading, data, empty and error states. **Golden tests** only where layout is the point.
+- Use **fakes** (small hand-written classes implementing the repository interface) over mocks when the interface is small. Use `mocktail` when you need to verify calls.
+- Override providers with `ProviderScope(overrides: [...])` or `ProviderContainer.test(overrides: [...])`.
+- Find widgets by `Key` or by user-visible text/semantics, not by widget type when several exist.
+- Avoid `pumpAndSettle` with infinite animations (progress indicators). Use `pump()` with a duration.
+- Tests must not touch the real network, clock or file system. Inject them.
+- When fixing a bug, first write a test that fails because of the bug.

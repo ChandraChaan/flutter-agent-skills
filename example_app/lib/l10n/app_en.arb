@@ -1,0 +1,20 @@
+{
+  "@@locale": "en",
+  "appTitle": "Expenses",
+  "emptyExpenses": "No expenses yet. Add your first one.",
+  "addExpense": "Add expense",
+  "titleLabel": "What for?",
+  "amountLabel": "Amount (₹)",
+  "save": "Save",
+  "cancel": "Cancel",
+  "retry": "Try again",
+  "errorLoading": "Couldn't load your expenses.",
+  "requiredField": "Required",
+  "invalidAmount": "Enter an amount like 240 or 240.50",
+  "total": "Total: {amount}",
+  "@total": {
+    "placeholders": {
+      "amount": { "type": "String" }
+    }
+  }
+}

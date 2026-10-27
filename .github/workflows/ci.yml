@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: python scripts/validate.py
+      - run: python scripts/build_rules.py --check
+      - name: Validate marketplace and plugin with Claude Code
+        run: |
+          npx -y @anthropic-ai/claude-code@2.1.296 plugin validate .
+          npx -y @anthropic-ai/claude-code@2.1.296 plugin validate ./plugins/flutter
+      - name: Install script smoke test
+        run: |
+          mkdir -p /tmp/app && touch /tmp/app/pubspec.yaml
+          scripts/install.sh rules /tmp/app
+          scripts/install.sh skills /tmp/app
+          test -f /tmp/app/AGENTS.md
+          test -f /tmp/app/.cursor/rules/flutter-tests.mdc
+          grep -q '^name: flutter-feature$' /tmp/app/.claude/skills/flutter-feature/SKILL.md
+
+  example-app:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: example_app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed lib test
+      - run: flutter analyze --fatal-infos
+      - run: flutter test

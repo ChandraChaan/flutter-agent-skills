@@ -1,0 +1,15 @@
+{
+  "name": "flutter-agent-skills",
+  "description": "Skills and rules for production Flutter development with AI coding agents.",
+  "owner": {
+    "name": "Chandra ObulaReddy",
+    "url": "https://github.com/ChandraChaan"
+  },
+  "plugins": [
+    {
+      "name": "flutter",
+      "source": "./plugins/flutter",
+      "description": "Build features, write tests, audit performance, accessibility and security, integrate Bluetooth LE, prepare releases and publish packages."
+    }
+  ]
+}

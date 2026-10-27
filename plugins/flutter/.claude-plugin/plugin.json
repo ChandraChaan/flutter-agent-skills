@@ -1,0 +1,13 @@
+{
+  "name": "flutter",
+  "version": "0.1.0",
+  "description": "Skills for production Flutter work: build features, write tests, audit performance, accessibility and security, integrate Bluetooth LE, prepare releases and publish packages.",
+  "author": {
+    "name": "Chandra ObulaReddy",
+    "url": "https://github.com/ChandraChaan"
+  },
+  "homepage": "https://github.com/ChandraChaan/flutter-agent-skills",
+  "repository": "https://github.com/ChandraChaan/flutter-agent-skills",
+  "license": "MIT",
+  "keywords": ["flutter", "dart", "mobile", "testing", "accessibility", "performance", "bluetooth"]
+}

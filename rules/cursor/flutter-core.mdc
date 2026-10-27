@@ -1,0 +1,45 @@
+---
+description: Project setup, the checks to run before finishing, architecture and git rules for this Flutter app
+globs:
+alwaysApply: true
+---
+<!-- Generated from rules/AGENTS.md by scripts/build_rules.py. Edit AGENTS.md instead. -->
+
+## This project
+
+- **State management:** Riverpod 3 (`Notifier`, `AsyncNotifier`). <!-- or: Bloc, Provider, signals -->
+- **Navigation:** go_router.
+- **Folders:** feature-first, `lib/features/<feature>/{data,domain,presentation}`, shared code in `lib/core/`.
+- **Generated code:** none. <!-- or: freezed + json_serializable; run `dart run build_runner build -d` -->
+- **Supported:** Android and iOS. <!-- add web/desktop if you ship them -->
+
+When existing code disagrees with these rules, **follow the existing code in that file** and mention the difference. Don't refactor unrelated code.
+
+## Before you finish any change
+
+Run these and fix everything they report. A change isn't done until all three pass.
+
+```bash
+dart format .
+flutter analyze
+flutter test
+```
+
+- Never silence a lint with `// ignore:` or by editing `analysis_options.yaml` unless the user asks.
+- Never edit generated files (`*.g.dart`, `*.freezed.dart`, `lib/l10n/app_localizations*.dart`). Change the source and regenerate.
+- Don't add a package without saying why and checking that it's maintained (recent release, null safety, supports our platforms). Prefer the SDK and existing dependencies.
+- Don't change `pubspec.lock`, platform folders (`android/`, `ios/`) or CI files unless the task needs it.
+
+## Architecture
+
+- **Layers:** `presentation` (widgets, controllers) → `domain` (models, repository interfaces) → `data` (API clients, databases, repository implementations). Imports only point inwards: widgets never import `data/` (controllers reach repositories through their providers), and `domain/` imports nothing from Flutter or `data/`.
+- **Repositories are interfaces** in `domain/`, implemented in `data/`, provided through Riverpod. Tests replace them with fakes.
+- **Models are immutable:** `final` fields, `const` constructors, `copyWith`, value equality. Use `sealed` classes for states and results so `switch` is exhaustive.
+- **No business logic in widgets.** Widgets render state and forward user intent to a controller. Formatting for display is fine; deciding what happens is not.
+- **Money is an integer of minor units** (paise, cents), never `double`.
+- **Time:** store `DateTime` in UTC (`toUtc()`); convert to local only for display.
+
+## Git
+
+- Small commits with messages in the imperative ("Add expense list empty state").
+- Don't commit build output, `.env` files, keystores or `google-services.json` for production.

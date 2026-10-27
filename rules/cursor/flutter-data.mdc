@@ -1,0 +1,21 @@
+---
+description: Rules for async code, errors, networking and security in the data layer
+globs: lib/**/data/**/*.dart,lib/core/**/*.dart
+alwaysApply: false
+---
+<!-- Generated from rules/AGENTS.md by scripts/build_rules.py. Edit AGENTS.md instead. -->
+
+## Async, errors and networking
+
+- Data layer methods throw **typed exceptions** (or return a sealed `Result`). Map HTTP status codes and `SocketException`/`TimeoutException` to them in one place. Never show raw exception text to users.
+- Every network call has a **timeout**. Retry only idempotent requests, with backoff.
+- Never `catch (e) {}` silently. Either handle it, rethrow it, or log it with the stack trace.
+- Heavy CPU work (large JSON, image processing, crypto) goes to `Isolate.run` / `compute`.
+- Don't use `print`. Use the project's logger, and never log tokens, passwords, OTPs, card or ID numbers, or health data.
+
+## Security
+
+- No secrets in the repository or in Dart code: API keys for paid services belong on a server. Configuration comes from `--dart-define-from-file`, not committed `.env` files.
+- Tokens and credentials go in `flutter_secure_storage` (Keychain / Keystore), never `SharedPreferences`.
+- Validate deep links and push payloads before acting on them.
+- Release builds use `--obfuscate --split-debug-info=<dir>`; keep the symbols for crash reports.

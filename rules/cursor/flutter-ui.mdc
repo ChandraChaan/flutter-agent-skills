@@ -1,0 +1,39 @@
+---
+description: Rules for Flutter widgets, state management, accessibility and performance
+globs: lib/**/*.dart
+alwaysApply: false
+---
+<!-- Generated from rules/AGENTS.md by scripts/build_rules.py. Edit AGENTS.md instead. -->
+
+## State management (Riverpod 3)
+
+- One controller per screen or flow: `Notifier<T>` for synchronous state, `AsyncNotifier<T>` when loading is involved.
+- Read with `ref.watch` in `build`, `ref.read` in callbacks. Never `ref.read` inside `build`.
+- Expose `AsyncValue` and handle all three cases in the UI with `switch`: data, loading, error. Every screen has a real loading state and a real error state with a retry.
+- After an `await` in a notifier, check `ref.mounted` before touching `state`.
+- Keep providers `final` and top-level. Use `.family` for parameters, not global mutable variables.
+
+## Widgets
+
+- Prefer `StatelessWidget` and small widgets in their own classes over helper methods that return widgets.
+- Use `const` constructors wherever possible.
+- **No hard-coded colours, text styles or strings.** Use `Theme.of(context).colorScheme`, `textTheme`, and the app's localisations (`AppLocalizations.of(context)`).
+- Lists of unknown length use `ListView.builder` (or slivers) with stable `Key`s from the item IDs.
+- **`BuildContext` across async gaps:** after `await`, check `if (!context.mounted) return;` before using `context`.
+- Dispose every `TextEditingController`, `AnimationController`, `ScrollController`, `FocusNode` and `StreamSubscription` you create.
+- Layouts must work from 320 px wide to tablets, and with system text scaled to 200%. Use `Flexible`/`Expanded`, `Wrap` and `LayoutBuilder` instead of fixed sizes.
+
+## Accessibility
+
+- Every tappable element is at least 48×48 dp and has a label (`tooltip` on `IconButton`, `semanticLabel` on meaningful images, `Semantics` for custom controls).
+- Decorative images use `excludeFromSemantics: true`.
+- Don't convey information by colour alone. Text contrast at least 4.5:1.
+
+## Performance
+
+- Keep `build` methods cheap: no parsing, sorting large lists, or I/O.
+- Split widgets so a state change rebuilds the smallest subtree; use `select` to watch part of a provider.
+- Size images to their display size (`cacheWidth`/`cacheHeight`, or a resized URL from the server).
+- Avoid `Opacity`, `ClipPath` and `saveLayer`-heavy effects on animated or scrolling content; prefer `FadeTransition`, `AnimatedOpacity`, or colours with alpha.
+- Animations that loop forever must stop when off screen or after a few repetitions.
+- Judge performance in **profile mode on a real, low-end device**, never in debug mode.
