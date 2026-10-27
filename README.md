@@ -5,6 +5,10 @@
 [![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-D97757)](#claude-code-plugin)
 [![Works with](https://img.shields.io/badge/works%20with-Cursor%20%C2%B7%20Copilot%20%C2%B7%20Codex%20%C2%B7%20Gemini-555)](#rules-for-any-agent)
 
+<p align="center">
+  <img src="doc/banner.png" alt="Flutter Agent Skills: one set of rules for every coding agent, plus eight skills for features, tests, performance, accessibility, Bluetooth LE, security, releases and pub.dev packages" width="760">
+</p>
+
 **Rules and skills that make AI coding agents write Flutter code the way a senior Flutter engineer would.**
 
 Coding agents are good at Flutter syntax and bad at Flutter judgement. Left alone they put logic in `build()`, use `BuildContext` after `await`, hard-code colours and strings, store tokens in `SharedPreferences`, skip error states, and say "done" without running the analyzer. This repository gives them:
